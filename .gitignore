@@ -1,1 +1,8 @@
-__pycache__/\n*.pyc\n*.png\n.vscode/\n.idea/
+__pycache__/
+*.pyc
+*.log
+*.swp
+.vscode/
+.idea/
+*.npy
+*.png
