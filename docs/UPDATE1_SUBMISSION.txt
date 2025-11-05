@@ -1,0 +1,24 @@
+Project Update 1 — FPGA-Accelerated 1D Kalman Filter (IMU only)
+
+Brief description:
+This update delivers a runnable Python golden model of a 1-D Kalman Filter (predict/update). It generates synthetic inputs (noisy constant and ramp), computes filtered estimates, and saves both the inputs and golden outputs to CSV. Plots are included for visual verification.
+
+What I implemented:
+- Scalar Kalman filter in Python.
+- Synthetic data generators (constant, ramp).
+- Export of inputs and golden outputs to CSV; plots for inspection.
+
+What files I submitted:
+- golden/golden_kf.py (implementation)
+- data/z_const.csv, data/z_ramp.csv (inputs)
+- data/x_out_const.csv, data/P_out_const.csv, data/x_out_ramp.csv, data/P_out_ramp.csv (golden outputs)
+- README.md with exact run instructions
+
+How to run:
+1) python3 -m venv .venv && source .venv/bin/activate
+2) pip install -r requirements.txt
+3) python golden/golden_kf.py --Q 1e-4 --R 1e-2 --x0 0.0 --P0 1.0
+
+Expected result:
+- CSVs in data/: z_*.csv, x_out_*.csv, P_out_*.csv
+- Plots in data/plots/: const_plot.png, ramp_plot.png
