@@ -1,24 +1,38 @@
 Project Update 1 — FPGA-Accelerated 1D Kalman Filter (IMU only)
 
-Brief description:
-This update delivers a runnable Python golden model of a 1-D Kalman Filter (predict/update). It generates synthetic inputs (noisy constant and ramp), computes filtered estimates, and saves both the inputs and golden outputs to CSV. Plots are included for visual verification.
+Brief description
+A runnable Python golden model of a 1-D Kalman Filter for IMU sensor fusion (single-axis angle).
+Model: A=1, B=Δt, C=1. Predict uses gyro rate (input u_k), Update uses accelerometer angle (measurement z_k).
+We provide two scenarios (sine and step), write golden outputs (x_hat, P, K) to CSV, generate plots, and include a
+scripted checker to compare future HLS outputs against the golden arrays.
 
-What I implemented:
-- Scalar Kalman filter in Python.
-- Synthetic data generators (constant, ramp).
-- Export of inputs and golden outputs to CSV; plots for inspection.
+What I implemented
+• Data generator (golden/gen_imu.py): creates t, x_true, u_gyro (rad/s), z_accel (rad) + plots.
+• 1-D KF runner (golden/kf_imu_from_csv.py): computes x_hat, P, K + plots and RMSE vs ground truth.
+• Auto-checker (golden/compare_golden.py): MAE/RMSE/MAX and PASS/FAIL vs golden.
 
-What files I submitted:
-- golden/golden_kf.py (implementation)
-- data/z_const.csv, data/z_ramp.csv (inputs)
-- data/x_out_const.csv, data/P_out_const.csv, data/x_out_ramp.csv, data/P_out_ramp.csv (golden outputs)
-- README.md with exact run instructions
+Files submitted
+golden/gen_imu.py, golden/kf_imu_from_csv.py, golden/compare_golden.py
+data/{sine,step}_{t,x_true,u_gyro,z_accel}.csv
+data/{sine,step}_{x_hat,P,K}.csv
+data/plots/* (rate, angle, KF overlays, K and P curves)
+README.md with exact run instructions
 
-How to run:
-1) python3 -m venv .venv && source .venv/bin/activate
-2) pip install -r requirements.txt
-3) python golden/golden_kf.py --Q 1e-4 --R 1e-2 --x0 0.0 --P0 1.0
+How to run
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python golden/gen_imu.py --scenario sine --plots
+python golden/gen_imu.py --scenario step --plots
+python golden/kf_imu_from_csv.py --scenario sine --Q 1e-4 --R 1e-2 --P0 1.0 --plots
+python golden/kf_imu_from_csv.py --scenario step --Q 1e-4 --R 1e-2 --P0 1.0 --plots
 
-Expected result:
-- CSVs in data/: z_*.csv, x_out_*.csv, P_out_*.csv
-- Plots in data/plots/: const_plot.png, ramp_plot.png
+verification
+python golden/compare_golden.py --ref data/sine_x_hat.csv --cand data/sine_x_hat.csv --eps 1e-9 --label x_hat   # PASS
+python golden/compare_golden.py --ref data/sine_P.csv     --cand data/sine_P.csv     --eps 1e-9 --label P       # PASS
+# RMSE improvement (from kf_imu_from_csv.py):
+# sine: measurement RMSE ≈ 0.0513 → KF RMSE ≈ 0.0114
+# step: measurement RMSE ≈ 0.0513 → KF RMSE ≈ 0.0132
+# Steady-state (Q=1e-4, R=1e-2): K∞ ≈ 0.0951, P∞ ≈ 9.512e-4 (matches plots/CSV tails)
+
+Environment
+Python 3.x (tested on 3.12), numpy, matplotlib (see requirements.txt). Ran on WSL/Ubuntu.
