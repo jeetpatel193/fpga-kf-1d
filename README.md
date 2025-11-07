@@ -27,3 +27,24 @@ python golden/kf_imu_from_csv.py --scenario step --Q 1e-4 --R 1e-2 --P0 1.0 --pl
 python golden/compare_golden.py --ref data/sine_x_hat.csv --cand data/sine_x_hat.csv --eps 1e-9 --label x_hat
 python golden/compare_golden.py --ref data/sine_P.csv     --cand data/sine_P.csv     --eps 1e-9 --label P
 
+---
+
+# 5) Csim and Csyn on Vitis Unified IDE 
+
+git clone the main directory
+run the following command from the main "fpga-kf-1d" directory
+vitis -w /home/pateljeet3/projects/fpga-kf-1d &
+Once the IDE opens in that workspace, continue with:
+
+File → New Component → HLS
+component name: kf1d_float
+comonent location: Keep it default which in my case was from the main "fpga-kf-1d" directory
+Top: kf1d_float
+Sources: hls/kf1d_float/kf1d_float.cpp
+Test bench: hls/kf1d_float/tb_kf1d.cpp
+Part: xcu280-fsvh2892-2L-e
+Clock: 250MHz
+
+"If the flow doesn’t show up restart vitis."
+
+Run C Simulation, then C Synthesis.

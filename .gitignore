@@ -6,7 +6,6 @@ __pycache__/
 .idea/
 *.npy
 
-# DO NOT ignore plots/CSVs (we want them tracked for grading)
 #*.png
 #*.csv
 

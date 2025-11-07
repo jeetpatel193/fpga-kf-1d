@@ -34,5 +34,7 @@ python golden/compare_golden.py --ref data/sine_P.csv     --cand data/sine_P.csv
 # step: measurement RMSE = 0.0513 → KF RMSE = 0.0132
 # Steady-state (Q=1e-4, R=1e-2): K(Infinity) = 0.0951, P(infinity) ≈ 9.512e-4 (matches plots/CSV tails)
 
+Next follow the steps for HLS on Vitis Unified IDE from README file.
+
 Environment
 Python 3.x (tested on 3.12), numpy, matplotlib (see requirements.txt). Ran on WSL/Ubuntu.
