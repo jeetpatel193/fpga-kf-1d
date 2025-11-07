@@ -6,6 +6,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include <algorithm>
 
 // kernel prototype
 extern "C" void kf1d_float(
@@ -31,7 +32,7 @@ static bool load_csv_1col(const std::string &path, std::vector<float>& out) {
 }
 
 int main() {
-    std::string base = "../../data/sine"; // relative to vitis_hls csim build dir
+    std::string base = "../../../../data/sine"; // relative to vitis_hls csim build dir
     std::vector<float> t, u, z, truth;
 
     bool ok_t  = load_csv_1col(base + "_t.csv",      t);
