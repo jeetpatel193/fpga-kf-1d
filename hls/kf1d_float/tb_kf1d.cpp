@@ -68,7 +68,7 @@ static Metrics compare_vecs(const std::vector<float> &ref,
 int main() {
     // NOTE: this base path is relative to the csim build directory
     // (kf1d_float_prj/sol1/csim/build)
-    std::string base = "../../../../data/sine";
+    std::string base = "../../../../../data/sine";
 
     std::vector<float> t, u, z, truth;
 
