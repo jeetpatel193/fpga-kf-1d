@@ -18,23 +18,3 @@ data/{sine,step}_{x_hat,P,K}.csv
 data/plots/* (rate, angle, KF overlays, K and P curves)
 README.md with exact run instructions
 
-How to run
-python3 -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-python golden/gen_imu.py --scenario sine --plots
-python golden/gen_imu.py --scenario step --plots
-python golden/kf_imu_from_csv.py --scenario sine --Q 1e-4 --R 1e-2 --P0 1.0 --plots
-python golden/kf_imu_from_csv.py --scenario step --Q 1e-4 --R 1e-2 --P0 1.0 --plots
-
-verification
-python golden/compare_golden.py --ref data/sine_x_hat.csv --cand data/sine_x_hat.csv --eps 1e-9 --label x_hat   # PASS
-python golden/compare_golden.py --ref data/sine_P.csv     --cand data/sine_P.csv     --eps 1e-9 --label P       # PASS
-# RMSE improvement (from kf_imu_from_csv.py):
-# sine: measurement RMSE = 0.0513 → KF RMSE = 0.0114
-# step: measurement RMSE = 0.0513 → KF RMSE = 0.0132
-# Steady-state (Q=1e-4, R=1e-2): K(Infinity) = 0.0951, P(infinity) ≈ 9.512e-4 (matches plots/CSV tails)
-
-Next follow the steps for HLS on Vitis Unified IDE from README file.
-
-Environment
-Python 3.x (tested on 3.12), numpy, matplotlib (see requirements.txt). Ran on WSL/Ubuntu.
