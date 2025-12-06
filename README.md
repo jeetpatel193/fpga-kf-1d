@@ -114,7 +114,10 @@ g++ -std=c++17 -O2 \
 
 scp build/kf1d_float.hw.xclbin \
     src/host_kf1d.cpp \
-    patelj3@pc172.cloudlab.umass.edu:~/PU2 
+    patelj3@pc172.cloudlab.umass.edu:~
+
+scp ../fpga-kf-1d/data/sine_u_gyro.csv ../fpga-kf-1d/data/sine_z_accel.csv     patelj3@pc151.cloudlab.umass.edu:~
+
 
 # Now on the oct node:
 source /opt/xilinx/xrt/setup.sh
@@ -129,4 +132,11 @@ g++ -std=c++17 -O2 \
     -o host_kf1d
 
 # HW RUN:
+#To run the synthetic (in-host) data from the host code:
 ./host_kf1d kf1d_float.hw.xclbin
+
+#To run the data from the csv files:
+./host_kf1d kf1d_float.hw.xclbin sine_u_gyro.csv sine_z_accel.csv
+
+#To run for different N samples for synthetic data:
+./host_kf1d kf1d_float.hw.xclbin 18000
